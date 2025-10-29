@@ -1,0 +1,226 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a3780, #26d0ce);
+    color: #fff;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden;          /* 防止气泡溢出滚动 */
+    position: relative;        /* 让伪元素相对 body 定位 */
+}
+
+/* 两颗缓慢移动的大气泡 */
+body::before,
+body::after{
+    content: '';
+    position: fixed;           /* 固定视口，不随内容滚动 */
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%,
+                                rgba(255, 38, 0, 0.18),
+                                transparent 60%);
+    animation: drift 25s linear infinite alternate;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::after{
+    width: 45vmax;
+    height: 45vmax;
+    background: radial-gradient(circle at 70% 70%,
+                                rgba(255, 106, 0, 0.15),
+                                transparent 60%);
+    animation-name: drift-alt;
+    animation-duration: 30s;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin: 40px 0 60px;
+}
+
+.title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 40px;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card:focus {
+    outline: 3px solid #3498db;
+    outline-offset: 3px;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card-image {
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.card:hover .card-img {
+    transform: scale(1.08);
+}
+
+.card-title {
+    padding: 10px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-title::after {
+    content: '→';
+    position: absolute;
+    right: 25px;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.card:hover .card-title::after {
+    opacity: 1;
+    transform: translateX(8px);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+    }
+    
+    .title {
+        font-size: 2.8rem;
+    }
+    
+    .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .card-image {
+        height: 240px;
+    }
+    
+    .card-title {
+        font-size: 1.5rem;
+        padding: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .title {
+        font-size: 2.4rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    body {
+        padding: 15px;
+    }
+    
+    .card-image {
+        height: 220px;
+    }
+    
+    .card-title {
+        font-size: 1.4rem;
+        padding: 20px;
+    }
+    
+    .header {
+        margin: 30px 0 40px;
+    }
+}
